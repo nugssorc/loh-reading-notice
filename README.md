@@ -13,6 +13,7 @@
   - 압축을 풀고 `설치.cmd` 더블클릭(게임은 끈 채로). 지우기는 `제거.cmd`.
   - 영웅입지전 모드매니저 창에 압축을 끌어다 놓기. 모드매니저로 설치하면 새 버전을 '업데이트 확인' → '지금 업데이트'로 바로 받습니다.
 - 게임 파일은 바꾸지 않습니다. 인터넷 전송 없음, 치트 기능 없음.
+- 설명과 사용법: https://gall.dcinside.com/mgallery/board/view/?id=san14&no=79055
 
 ## 동작 방식
 - 게임 함수에 끼어들기(후킹): `UI_FinishReadingUI.OpenUI`(독서 완료 창), `UI_ConfirmContributeUI.OpenUI`(아이템 획득 창), 책 진행 보상 함수 둘(책인지 표시만).
