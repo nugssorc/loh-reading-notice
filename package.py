@@ -15,6 +15,7 @@ REPO = 'nugssorc/loh-reading-notice'
 GAME_BUILD = '26159462'
 UPLOAD = ROOT.parent / '배포_올릴것'
 TITLE = '독서 알림 정리'
+PAGE = 'https://gall.dcinside.com/mgallery/board/view/?id=san14&no=79055'      # 디시 글(1.0.0 부터). 새 판은 이 글을 고쳐 올림(제목 판 번호도)
 SLOTS = ['version', 'winhttp', 'winmm', 'hid']
 # RVA 는 GAME_BUILD 판 GameAssembly.dll 기준(2026-11-01 역어셈블). 모드매니저 겹침 비교용.
 CHANGES = [
@@ -67,6 +68,7 @@ README = """독서 알림 정리 {v} — 영웅입지전 모드
 - 게임 빌드 {game} 에서 확인했습니다. 게임이 업데이트되어 맞는 곳을 못 찾으면 그 기능만 쉬고 원래 창이 뜹니다.
 - 기록: 모드 폴더의 LOH_ReadingNotice.log
 - 소스 공개, MIT-0: https://github.com/{repo}
+- 설명·문의: {page}
 """
 
 def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -122,10 +124,10 @@ def main():
     mod.mkdir(parents=True)
     shutil.copy2(dll, mod / dll.name)
     (mod / '독서알림_설정.ini').write_bytes(SETTINGS.encode('utf-16-le'))
-    info = {'format': 1, 'name': '독서 알림 정리', 'version': version, 'github': REPO, 'settings': ['독서알림_설정.ini'],
+    info = {'format': 1, 'name': '독서 알림 정리', 'version': version, 'page': PAGE, 'github': REPO, 'settings': ['독서알림_설정.ini'],
             'game': GAME_BUILD, 'changes': CHANGES, 'notes': NOTES}
     (mod / 'loh-mod.json').write_text(json.dumps(info, ensure_ascii=False, indent=2), 'utf-8')
-    (top / '읽어주세요.txt').write_text(README.format(v=version, repo=REPO, game=GAME_BUILD).replace('\n', '\r\n'), 'utf-8-sig')
+    (top / '읽어주세요.txt').write_text(README.format(v=version, repo=REPO, game=GAME_BUILD, page=PAGE).replace('\n', '\r\n'), 'utf-8-sig')
     entries = [{'src': f'{MODULE}\\{p.name}', 'dst': f'{MODULE}\\{p.name}', 'sha256': sha(p)} for p in sorted(mod.iterdir())]
     (files / 'entry').mkdir()
     for slot in SLOTS:
