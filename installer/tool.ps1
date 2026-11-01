@@ -9,6 +9,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $Name = 'LOH_ReadingNotice'; $Marker = 'LOH_ReadingNotice entry 1'
 $Slots = @('version.dll','winhttp.dll','winmm.dll','hid.dll')
+$ManagerPage = 'https://gall.dcinside.com/mgallery/board/view/?id=san14&no=78820'
 function Say([string]$t) { Write-Host $t }
 function Fail([string]$t) { Write-Host ''; Write-Host "  [멈춤] $t" -ForegroundColor Yellow; Write-Host ''; exit 1 }
 function File-Hash([string]$Path) { (Get-FileHash -Algorithm SHA256 -LiteralPath $Path).Hash.ToUpper() }
@@ -71,7 +72,7 @@ if ($Action -eq 'Install') {
     $Owned = @(Owned-Slots)
     if ($Owned.Count) { $Entry = $Owned[0] }
     else { foreach ($s in $Slots) { if (!(Test-Path -LiteralPath (Join-Path $Game $s))) { $Entry = $s; break }; Say "  - $s 자리: 다른 모드가 쓰는 중 → 건너뜀" } }
-    if (!$Entry) { Fail '입구로 쓸 빈 자리가 없습니다(version / winhttp / winmm / hid 가 모두 다른 모드에 쓰이는 중). 이럴 때는 모드매니저로 설치하세요.' }
+    if (!$Entry) { Fail "입구로 쓸 빈 자리가 없습니다(version / winhttp / winmm / hid 가 모두 다른 모드에 쓰이는 중).`n         이럴 때는 모드매니저에 이 압축을 끌어다 놓아 등록해서 쓰세요(여러 모드가 입구 하나를 같이 씀).`n         모드매니저 사용법: $ManagerPage" }
     Say "  입구 자리: $Entry"
     foreach ($File in @($Manifest.files) + @($Manifest.entries)) {      # 바꾸기 전에 묶음 전체 검사
         $Source = [IO.Path]::GetFullPath((Join-Path $PayloadPath $File.src))
